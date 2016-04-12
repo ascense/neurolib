@@ -46,30 +46,30 @@ class _BaseLayer(object):
         return self._dim
 
     @abstractmethod
-    def build(self, in_):
+    def activate(self, in_):
         raise NotImplementedError("Not implemented")
+
+    def build(self, inputs):
+        self._a = self.activate(reduce(lambda x, y: x+y, inputs))
+        return self._a
 
 
 class LinearLayer(_BaseLayer):
-    def build(self, in_):
-        self._a = in_[0]
-        return self._a
+    def activate(self, in_):
+        return in_
 
 
 class TanhLayer(_BaseLayer):
-    def build(self, in_):
-        self._a = theano.tensor.tanh(in_[0])
-        return self._a
+    def activate(self, in_):
+        return theano.tensor.tanh(in_)
 
 
 class SigmoidLayer(_BaseLayer):
-    def build(self, in_):
-        self._a = theano.tensor.sigmoid(in_[0])
-        return self._a
+    def activate(self, in_):
+        return theano.tensor.sigmoid(in_)
 
 
 class SoftmaxLayer(_BaseLayer):
-    def build(self, in_):
-        self._a = theano.tensor.nnet.softmax(in_[0])
-        return self._a
+    def activate(self, in_):
+        return theano.tensor.nnet.softmax(in_)
 
