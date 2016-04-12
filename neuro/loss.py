@@ -6,6 +6,18 @@ from abc import ABCMeta, abstractmethod
 
 @six.add_metaclass(ABCMeta)
 class _BaseLoss(object):
+    def __init__(self, learning_rate):
+        self._epsilon = learning_rate
+
+    @property
+    def learning_rate(self):
+        return self._epsilon
+
+    @learning_rate.setter
+    def learning_rate(self, value):
+        logging.info("Setting learning rate to %f", value)
+        self._epsilon = value
+
     @abstractmethod
     def build(self, net):
         """Initialize loss function for neural net 'net'"""

@@ -11,10 +11,10 @@ class _BaseConnection(object):
 
         name defines the name of the connection
 
-        init_W is a function init_W(in_dim, out_dim) used to initialize the
+        init_W is a function init_W(out_dim, in_dim) used to initialize the
          weight matrix
 
-        init_b is a function init_b(in_dim, out_dim) used to initialize the
+        init_b is a function init_b(out_dim) used to initialize the
          bias vector
         """
         self.name = name if name else "{}-{}".format(in_layer.name, out_layer.name)
@@ -62,7 +62,7 @@ class _BaseConnection(object):
 class Connection(_BaseConnection):
     """Full connection with weights and bias
 
-    Equation: output = input*W + b
+    Equation: output = input.dot(W) + b
     """
 
     def build(self, in_):

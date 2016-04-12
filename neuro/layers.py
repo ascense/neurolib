@@ -10,8 +10,25 @@ class _BaseLayer(object):
         self._dim = dim
         self._name = name
 
+        self._inputs = list()
+        self._outputs = list()
+
         # activation term
         self._a = None
+
+    def add_input(self, connection):
+        self._inputs.append(connection)
+
+    @property
+    def inputs(self):
+        return self._inputs
+
+    def add_output(self, connection):
+        self._outputs.append(connection)
+
+    @property
+    def outputs(self):
+        return self._outputs
 
     @property
     def dim(self):
