@@ -126,15 +126,21 @@ class FeedForwardNetwork(object):
             self.input_term = theano.tensor.matrix('X')
         if not self.training_input_term:
             self.training_input_term = theano.tensor.lvector('y')
+        self._in_layer.build([self.input_term])
 
-    def _build_connections(self, layer, in_):
-        out = layer.build(in_)
-        for connection in layer.outputs:
-            self._build_connections(
-                connection.out_layer,
-                connection.build(out)
-            )
-        return out
+    def _build(self, layer):
+        for connection in layer.inputs:
+            if not connection.output_term:
+                self._build_connection(connection)
+        self._build_layer(layer)
+
+    def _build_connection(self, connection):
+        if not connection.in_layer.output_term:
+            self._build(connection.in_layer)
+        connection.build(connection.in_layer.output_term)
+
+    def _build_layer(self, layer):
+        layer.build([conn.output_term for conn in layer.inputs])
 
     def _build_loss_function(self):
         if not self._loss_function:
@@ -153,7 +159,7 @@ class FeedForwardNetwork(object):
             )
 
         self._build_inputs()
-        self._build_connections(self._in_layer, self._in_term)
+        self._build(self._out_layer)
         self._build_loss_function()
 
         self._f_fw_prop = theano.function([self.input_term], self.output_term)

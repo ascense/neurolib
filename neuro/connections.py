@@ -55,6 +55,10 @@ class _BaseConnection(object):
     def biases(self):
         return self._b
 
+    @property
+    def output_term(self):
+        return self._z
+
     @abstractmethod
     def build(self, in_):
         raise NotImplementedError("Not implemented")

@@ -52,24 +52,24 @@ class _BaseLayer(object):
 
 class LinearLayer(_BaseLayer):
     def build(self, in_):
-        self._a = in_
+        self._a = in_[0]
         return self._a
 
 
 class TanhLayer(_BaseLayer):
     def build(self, in_):
-        self._a = theano.tensor.tanh(in_)
+        self._a = theano.tensor.tanh(in_[0])
         return self._a
 
 
 class SigmoidLayer(_BaseLayer):
     def build(self, in_):
-        self._a = theano.tensor.sigmoid(in_)
+        self._a = theano.tensor.sigmoid(in_[0])
         return self._a
 
 
 class SoftmaxLayer(_BaseLayer):
     def build(self, in_):
-        self._a = theano.tensor.nnet.softmax(in_)
+        self._a = theano.tensor.nnet.softmax(in_[0])
         return self._a
 
